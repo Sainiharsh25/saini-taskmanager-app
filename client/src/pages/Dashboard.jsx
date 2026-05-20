@@ -136,7 +136,7 @@ export default function Dashboard() {
     <div className="flex min-h-screen bg-gradient-to-br from-indigo-100 via-white to-purple-100">
 
       {/* Sidebar */}
-      <div className="w-[260px] bg-black text-white p-6 flex flex-col justify-between shadow-2xl">
+      <div className="w-[260px] bg-black text-white p-6 flex flex-col justify-start shadow-2xl">
 
         <div>
           <h1 className="text-3xl font-bold mb-12 tracking-wide">
@@ -195,19 +195,18 @@ export default function Dashboard() {
               Analytics
             </div>
 
+            {/* Logout - below Analytics in red */}
+            <button
+              onClick={() => setShowLogout(true)}
+              className="flex items-center gap-3 p-4 rounded-xl cursor-pointer bg-red-500/20 hover:bg-red-500/40 text-red-400 hover:text-red-300 transition w-full"
+            >
+              <LogOut size={20} />
+              Logout
+            </button>
+
           </div>
         </div>
 
-        {/* Logout */}
-        <button
-          onClick={() =>
-            setShowLogout(true)
-          }
-          className="bg-white text-black p-4 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-200 transition hover:scale-105"
-        >
-          <LogOut size={18} />
-          Logout
-        </button>
       </div>
 
       {/* Main */}
@@ -497,7 +496,7 @@ export default function Dashboard() {
                   window.location.href =
                     "/";
                 }}
-                  className="flex items-center gap-3 p-4 rounded-xl cursor-pointer bg-red-500/20 hover:bg-red-500/40 text-red-400 hover:text-red-300 transition w-full mt-2"
+                className="flex-1 bg-red-500 text-white py-3 rounded-xl hover:bg-red-600 transition"
               >
                 Logout
               </button>
