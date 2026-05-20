@@ -6,8 +6,8 @@ A full-stack team task management web application with role-based access control
 
 ## 🌐 Live Demo
 
-- **Frontend:** [https://your-frontend.up.railway.app](https://your-frontend.up.railway.app)
-- **Backend API:** [https://task-manager-dashboard-production.up.railway.app](https://task-manager-dashboard-production.up.railway.app)
+- **Frontend:** https://saini-taskmanager-app.vercel.app
+- **Backend API:** https://task-manager-dashboard-muj0.onrender.com
 
 ---
 
@@ -201,12 +201,12 @@ MONGO_URI=your_mongodb_url
 JWT_SECRET=your_jwt_secret
 NODE_ENV=production
 PORT=5000
-CLIENT_URL=https://task-manager-dashboard-production.up.railway.app/
+CLIENT_URL=https://task-manager-dashboard-muj0.onrender.com
 ```
 
 ### Frontend Environment Variables
 ```env
-VITE_API_URL=https://devoted-comfort-production-b337.up.railway.app/
+VITE_API_URL=https://saini-taskmanager-app.vercel.app
 ```
 
 ---
