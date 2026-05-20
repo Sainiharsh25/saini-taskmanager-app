@@ -27,14 +27,6 @@ const DEMO_CREDENTIALS = [
     description: "Full access"
   },
   {
-    role: "Team Member",
-    email: "team@gmail.com",
-    password: "team123",
-    color: "purple",
-    icon: "👥",
-    description: "Member access"
-  },
-  {
     role: "Tasker",
     email: "tasker@gmail.com",
     password: "tasker123",
