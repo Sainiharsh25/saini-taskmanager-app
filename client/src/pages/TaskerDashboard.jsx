@@ -221,51 +221,47 @@ ${completedTasks}
       <div className="flex">
 
         {/* ================= SIDEBAR ================= */}
-        <div className="w-[260px] min-h-screen bg-black text-white p-6 flex flex-col justify-between">
+        <div className="w-[260px] min-h-screen bg-black text-white p-6 flex flex-col justify-start">
 
-          <div>
+          <h1 className="text-3xl font-bold mb-12">
+            TaskFlow
+          </h1>
 
-            <h1 className="text-3xl font-bold mb-12">
-              TaskFlow
-            </h1>
+          <div className="space-y-4">
 
-            <div className="space-y-4">
-
-              <div className="bg-white/10 p-4 rounded-2xl flex items-center gap-3">
-                <FolderKanban size={20} />
-                Tasker Dashboard
-              </div>
-
-              <div className="p-4 rounded-2xl flex items-center gap-3 hover:bg-white/10 transition cursor-pointer">
-                <Activity size={20} />
-                Live Tracking
-              </div>
-
-              <div className="p-4 rounded-2xl flex items-center gap-3 hover:bg-white/10 transition cursor-pointer">
-                <Target size={20} />
-                Productivity
-              </div>
-
-              <div className="p-4 rounded-2xl flex items-center gap-3 hover:bg-white/10 transition cursor-pointer">
-                <CalendarDays size={20} />
-                Attendance
-              </div>
-
+            <div className="bg-white/10 p-4 rounded-2xl flex items-center gap-3">
+              <FolderKanban size={20} />
+              Tasker Dashboard
             </div>
 
-          </div>
+            <div className="p-4 rounded-2xl flex items-center gap-3 hover:bg-white/10 transition cursor-pointer">
+              <Activity size={20} />
+              Live Tracking
+            </div>
 
-          {/* LOGOUT */}
-          <button
-            onClick={() => {
-              localStorage.clear();
-              window.location.href = "/";
-            }}
-            className="bg-red-500 hover:bg-red-600 text-white py-3 rounded-2xl flex items-center justify-center gap-2 transition"
-          >
-            <LogOut size={18} />
-            Logout
-          </button>
+            <div className="p-4 rounded-2xl flex items-center gap-3 hover:bg-white/10 transition cursor-pointer">
+              <Target size={20} />
+              Productivity
+            </div>
+
+            <div className="p-4 rounded-2xl flex items-center gap-3 hover:bg-white/10 transition cursor-pointer">
+              <CalendarDays size={20} />
+              Attendance
+            </div>
+
+            {/* LOGOUT - below Attendance in red */}
+            <button
+              onClick={() => {
+                localStorage.clear();
+                window.location.href = "/";
+              }}
+              className="flex items-center gap-3 p-4 rounded-xl cursor-pointer bg-red-500/20 hover:bg-red-500/40 text-red-400 hover:text-red-300 transition w-full"
+            >
+              <LogOut size={20} />
+              Logout
+            </button>
+
+          </div>
 
         </div>
 
