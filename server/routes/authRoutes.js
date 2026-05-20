@@ -6,12 +6,23 @@ const User = require("../models/User");
 const router = express.Router();
 
 
-// Signup
+// ================= SIGNUP =================
 router.post("/signup", async (req, res) => {
-  try {
-    const { name, email, password, role } = req.body;
 
-    const existingUser = await User.findOne({ email });
+  try {
+
+    const {
+      name,
+      email,
+      password,
+      role
+    } = req.body;
+
+    // Check existing user
+    const existingUser =
+      await User.findOne({
+        email: email.toLowerCase()
+      });
 
     if (existingUser) {
       return res.status(400).json({
@@ -19,34 +30,72 @@ router.post("/signup", async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Allowed Roles
+    const allowedRoles = [
+      "Admin",
+      "Team Member",
+      "Tasker"
+    ];
 
+    // Validate Role
+    if (
+      !allowedRoles.includes(role)
+    ) {
+      return res.status(400).json({
+        message: "Invalid role selected"
+      });
+    }
+
+    // Hash Password
+    const hashedPassword =
+      await bcrypt.hash(password, 10);
+
+    // Create User
     const user = await User.create({
       name,
-      email,
+      email: email.toLowerCase(),
       password: hashedPassword,
       role
     });
 
     res.status(201).json({
       message: "Signup successful",
-      user
+
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
     });
 
   } catch (error) {
+
     res.status(500).json({
       message: error.message
     });
+
   }
+
 });
 
 
-// Login
+// ================= LOGIN =================
 router.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+  try {
+
+    const {
+      email,
+      password,
+      role
+    } = req.body;
+
+    // Find User
+    const user =
+      await User.findOne({
+        email: email.toLowerCase()
+      });
 
     if (!user) {
       return res.status(404).json({
@@ -54,10 +103,12 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    const isMatch = await bcrypt.compare(
-      password,
-      user.password
-    );
+    // Compare Password
+    const isMatch =
+      await bcrypt.compare(
+        password,
+        user.password
+      );
 
     if (!isMatch) {
       return res.status(400).json({
@@ -65,6 +116,18 @@ router.post("/login", async (req, res) => {
       });
     }
 
+    // Role Validation
+    if (
+      user.role.toLowerCase() !==
+      role.toLowerCase()
+    ) {
+      return res.status(401).json({
+        message:
+          `This account is registered as ${user.role}`
+      });
+    }
+
+    // Generate JWT
     const token = jwt.sign(
       {
         id: user._id,
@@ -76,17 +139,28 @@ router.post("/login", async (req, res) => {
       }
     );
 
+    // Success Response
     res.status(200).json({
       message: "Login successful",
+
       token,
-      user
+
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
     });
 
   } catch (error) {
+
     res.status(500).json({
       message: error.message
     });
+
   }
+
 });
 
 module.exports = router;

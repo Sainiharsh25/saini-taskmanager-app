@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   BrowserRouter,
   Routes,
@@ -7,25 +8,38 @@ import {
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+
 import Dashboard from "./pages/Dashboard";
+import TeamDashboard from "./pages/TeamDashboard";
+import TaskerDashboard from "./pages/TaskerDashboard";
+
 import Tasks from "./pages/Tasks";
-import ProtectedRoute from "./components/ProtectedRoute";
 import Projects from "./pages/Projects";
 import Team from "./pages/Team";
 import Analytics from "./pages/Analytics";
 
+import ProtectedRoute from "./components/ProtectedRoute";
+
 export default function App() {
+
   return (
     <BrowserRouter>
+
       <Routes>
 
-        {/* Login */}
-        <Route path="/" element={<Login />} />
+        {/* ================= LOGIN ================= */}
+        <Route
+          path="/"
+          element={<Login />}
+        />
 
-        {/* Signup */}
-        <Route path="/signup" element={<Signup />} />
+        {/* ================= SIGNUP ================= */}
+        <Route
+          path="/signup"
+          element={<Signup />}
+        />
 
-        {/* Protected Dashboard */}
+        {/* ================= ADMIN DASHBOARD ================= */}
         <Route
           path="/dashboard"
           element={
@@ -35,7 +49,27 @@ export default function App() {
           }
         />
 
-        {/* Protected Tasks Page */}
+        {/* ================= TEAM DASHBOARD ================= */}
+        <Route
+          path="/team-dashboard"
+          element={
+            <ProtectedRoute>
+              <TeamDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ================= TASKER DASHBOARD ================= */}
+        <Route
+          path="/tasker-dashboard"
+          element={
+            <ProtectedRoute>
+              <TaskerDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ================= TASKS ================= */}
         <Route
           path="/tasks"
           element={
@@ -45,7 +79,7 @@ export default function App() {
           }
         />
 
-        {/* ADDED ROUTES */}
+        {/* ================= PROJECTS ================= */}
         <Route
           path="/projects"
           element={
@@ -55,6 +89,7 @@ export default function App() {
           }
         />
 
+        {/* ================= TEAM ================= */}
         <Route
           path="/team"
           element={
@@ -64,6 +99,7 @@ export default function App() {
           }
         />
 
+        {/* ================= ANALYTICS ================= */}
         <Route
           path="/analytics"
           element={
@@ -74,6 +110,7 @@ export default function App() {
         />
 
       </Routes>
+
     </BrowserRouter>
   );
 }

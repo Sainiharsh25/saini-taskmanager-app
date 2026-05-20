@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   FolderKanban,
@@ -9,312 +8,500 @@ import {
   Users,
   BarChart3,
   Bell,
-  LogOut
+  LogOut,
+  ArrowUpRight
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+const StatCard = ({
+  title,
+  value,
+  icon,
+  color,
+  onClick
+}) => (
+  <div
+    onClick={onClick}
+    className="bg-white/80 backdrop-blur-lg rounded-3xl p-6 shadow-lg border border-white/20 hover:scale-105 hover:shadow-2xl transition duration-300 cursor-pointer"
+  >
+    <div className="flex justify-between items-center">
+      <div>
+        <p className="text-gray-500 text-sm">
+          {title}
+        </p>
+
+        <h2 className="text-4xl font-bold mt-2 text-gray-800">
+          {value}
+        </h2>
+      </div>
+
+      <div
+        className={`w-16 h-16 rounded-2xl flex items-center justify-center text-white ${color}`}
+      >
+        {icon}
+      </div>
+    </div>
+  </div>
+);
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
 
-  // logout popup state
-  const [showLogout, setShowLogout] = useState(false);
+  const user = JSON.parse(
+    localStorage.getItem("user")
+  );
 
+  const [showLogout, setShowLogout] =
+    useState(false);
+
+  const [showAllTasks, setShowAllTasks] =
+    useState(false);
+
+  // Stats
   const stats = [
     {
       title: "Total Projects",
       value: "12",
-      icon: <FolderKanban size={28} />
+      icon: <FolderKanban size={30} />,
+      color:
+        "bg-gradient-to-r from-blue-500 to-cyan-500",
+      route: "/projects"
     },
     {
-      title: "Completed Tasks",
+      title: "Completed",
       value: "128",
-      icon: <CheckCircle size={28} />
+      icon: <CheckCircle size={30} />,
+      color:
+        "bg-gradient-to-r from-green-500 to-emerald-500",
+      route: "/tasks"
     },
     {
-      title: "Pending Tasks",
+      title: "Pending",
       value: "34",
-      icon: <Clock size={28} />
+      icon: <Clock size={30} />,
+      color:
+        "bg-gradient-to-r from-yellow-400 to-orange-500",
+      route: "/tasks"
     },
     {
       title: "Overdue",
       value: "8",
-      icon: <AlertTriangle size={28} />
+      icon: <AlertTriangle size={30} />,
+      color:
+        "bg-gradient-to-r from-red-500 to-pink-500",
+      route: "/tasks"
     }
   ];
 
-  const handleLogout = () => {
-    setShowLogout(true);
-  };
+  // Tasks
+  const tasks = [
+    {
+      title: "UI Dashboard Design",
+      project: "Task Manager",
+      priority: "High",
+      status: "In Progress",
+      due: "12 May"
+    },
+    {
+      title: "MongoDB Setup",
+      project: "Backend",
+      priority: "Medium",
+      status: "Completed",
+      due: "15 May"
+    },
+    {
+      title: "Deploy Railway",
+      project: "Deployment",
+      priority: "High",
+      status: "Pending",
+      due: "18 May"
+    },
+    {
+      title: "Authentication System",
+      project: "Security",
+      priority: "Low",
+      status: "Completed",
+      due: "20 May"
+    },
+    {
+      title: "Analytics Charts",
+      project: "Dashboard",
+      priority: "Medium",
+      status: "In Progress",
+      due: "25 May"
+    }
+  ];
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gradient-to-br from-indigo-100 via-white to-purple-100">
 
       {/* Sidebar */}
-      <div className="w-[260px] bg-black text-white p-6">
-        <h1 className="text-2xl font-bold mb-10">
-          Task Manager
-        </h1>
+      <div className="w-[260px] bg-black text-white p-6 flex flex-col justify-between shadow-2xl">
 
-        <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold mb-12 tracking-wide">
+            TaskFlow
+          </h1>
 
-          <div
-            onClick={() => navigate("/dashboard")}
-            className="flex items-center gap-3 cursor-pointer hover:text-gray-300"
-          >
-            <LayoutDashboard size={20} />
-            <span>Dashboard</span>
-          </div>
+          <div className="space-y-4">
 
-          {/* ✅ FIXED: Projects */}
-          <div
-            onClick={() => navigate("/projects")}
-            className="flex items-center gap-3 cursor-pointer hover:text-gray-300"
-          >
-            <FolderKanban size={20} />
-            <span>Projects</span>
-          </div>
+            <div
+              onClick={() =>
+                navigate("/dashboard")
+              }
+              className="flex items-center gap-3 bg-white/10 p-4 rounded-xl cursor-pointer hover:bg-white/20 transition"
+            >
+              <LayoutDashboard size={20} />
+              Dashboard
+            </div>
 
-          <div
-            onClick={() => navigate("/tasks")}
-            className="flex items-center gap-3 cursor-pointer hover:text-gray-300"
-          >
-            <CheckCircle size={20} />
-            <span>Tasks</span>
-          </div>
+            <div
+              onClick={() =>
+                navigate("/projects")
+              }
+              className="flex items-center gap-3 p-4 rounded-xl cursor-pointer hover:bg-white/10 transition"
+            >
+              <FolderKanban size={20} />
+              Projects
+            </div>
 
-          {/* ✅ FIXED: Team Members */}
-          <div
-            onClick={() => navigate("/team")}
-            className="flex items-center gap-3 cursor-pointer hover:text-gray-300"
-          >
-            <Users size={20} />
-            <span>Team Members</span>
-          </div>
+            <div
+              onClick={() =>
+                navigate("/tasks")
+              }
+              className="flex items-center gap-3 p-4 rounded-xl cursor-pointer hover:bg-white/10 transition"
+            >
+              <CheckCircle size={20} />
+              Tasks
+            </div>
 
-          {/* ✅ FIXED: Analytics */}
-          <div
-            onClick={() => navigate("/analytics")}
-            className="flex items-center gap-3 cursor-pointer hover:text-gray-300"
-          >
-            <BarChart3 size={20} />
-            <span>Analytics</span>
+            <div
+              onClick={() =>
+                navigate("/team")
+              }
+              className="flex items-center gap-3 p-4 rounded-xl cursor-pointer hover:bg-white/10 transition"
+            >
+              <Users size={20} />
+              Team
+            </div>
+
+            <div
+              onClick={() =>
+                navigate("/analytics")
+              }
+              className="flex items-center gap-3 p-4 rounded-xl cursor-pointer hover:bg-white/10 transition"
+            >
+              <BarChart3 size={20} />
+              Analytics
+            </div>
+
           </div>
         </div>
 
         {/* Logout */}
         <button
-          onClick={handleLogout}
-          className="mt-20 flex items-center gap-3 bg-white text-black px-4 py-3 rounded-xl w-full hover:bg-gray-200 transition"
+          onClick={() =>
+            setShowLogout(true)
+          }
+          className="bg-white text-black p-4 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-200 transition hover:scale-105"
         >
           <LogOut size={18} />
           Logout
         </button>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1">
+      {/* Main */}
+      <div className="flex-1 p-8 overflow-y-auto">
 
         {/* Top Navbar */}
-        <div className="bg-white shadow-sm px-8 py-5 flex justify-between items-center">
+        <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-lg p-6 flex justify-between items-center mb-8 border border-white/20 hover:shadow-2xl transition">
+
           <div>
-            <h1 className="text-3xl font-bold">
-              Team Task Manager
+            <h1 className="text-4xl font-bold text-gray-800">
+              Welcome Back 👋
             </h1>
-            <p className="text-gray-500 text-sm">
-              Admin Dashboard
+
+            <p className="text-gray-500 mt-1">
+              Manage your projects and productivity
             </p>
           </div>
 
           <div className="flex items-center gap-6">
-            <Bell className="cursor-pointer" />
+
+            <Bell className="cursor-pointer text-gray-700 hover:scale-110 transition" />
 
             <div className="text-right">
-              <p className="font-semibold">
+              <h3 className="font-bold text-gray-800">
                 {user?.name || "User"}
-              </p>
+              </h3>
+
               <p className="text-sm text-gray-500">
                 {user?.role || "Member"}
               </p>
             </div>
 
             <button
-              onClick={() => navigate("/tasks")}
-              className="bg-black text-white px-6 py-3 rounded-xl hover:scale-105 transition"
+              onClick={() =>
+                navigate("/tasks")
+              }
+              className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-3 rounded-2xl shadow-lg hover:scale-105 transition"
             >
               + Create Task
             </button>
+
           </div>
         </div>
 
-        <div className="p-8">
+        {/* Stats */}
+        <div className="grid md:grid-cols-4 gap-6 mb-10">
 
-          {/* Welcome Section */}
-          <div className="mb-8">
-            <h2 className="text-4xl font-bold">
-              Welcome Back 👋
-            </h2>
-            <p className="text-gray-600 mt-2">
-              Track projects, tasks, and employee productivity
-            </p>
-          </div>
+          {stats.map((item, index) => (
+            <StatCard
+              key={index}
+              title={item.title}
+              value={item.value}
+              icon={item.icon}
+              color={item.color}
+              onClick={() =>
+                navigate(item.route)
+              }
+            />
+          ))}
 
-          {/* Stats Cards */}
-          <div className="grid md:grid-cols-4 gap-6 mb-10">
-            {stats.map((item, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition"
-              >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <p className="text-gray-500 text-sm">
-                      {item.title}
-                    </p>
-                    <h2 className="text-3xl font-bold mt-2">
-                      {item.value}
-                    </h2>
-                  </div>
+        </div>
 
-                  <div className="bg-gray-100 p-4 rounded-xl">
-                    {item.icon}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* Performance + Tasks */}
+        <div className="grid lg:grid-cols-3 gap-6 mb-10">
 
-          {/* Middle Section */}
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
+          {/* Team Performance */}
+          <div className="lg:col-span-1 bg-white/70 backdrop-blur-lg rounded-3xl p-6 shadow-lg border border-white/20 hover:shadow-2xl transition">
 
-            {/* Recent Tasks */}
-            <div className="bg-white rounded-2xl shadow-md p-6">
-              <h2 className="text-xl font-semibold mb-5">
-                Recent Tasks
-              </h2>
-
-              <div className="space-y-4">
-                <div className="flex justify-between border-b pb-3">
-                  <span>Design Login Page</span>
-                  <span className="font-medium text-green-600">
-                    Completed
-                  </span>
-                </div>
-
-                <div className="flex justify-between border-b pb-3">
-                  <span>Backend API Integration</span>
-                  <span className="font-medium text-yellow-600">
-                    In Progress
-                  </span>
-                </div>
-
-                <div className="flex justify-between border-b pb-3">
-                  <span>Deploy Backend</span>
-                  <span className="font-medium text-red-500">
-                    Pending
-                  </span>
-                </div>
-
-                <div className="flex justify-between">
-                  <span>MongoDB Connection</span>
-                  <span className="font-medium text-green-600">
-                    Completed
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Team Performance */}
-            <div className="bg-white rounded-2xl shadow-md p-6">
-              <h2 className="text-xl font-semibold mb-5">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold">
                 Team Performance
               </h2>
 
-              <div className="space-y-5">
-                <div className="flex justify-between items-center">
-                  <span>Rahul Sharma</span>
-                  <span className="font-bold">92%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-black h-2 rounded-full w-[92%]"></div>
-                </div>
+              <ArrowUpRight />
+            </div>
 
-                <div className="flex justify-between items-center">
-                  <span>Priya Singh</span>
-                  <span className="font-bold">88%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-black h-2 rounded-full w-[88%]"></div>
-                </div>
+            <div className="space-y-5">
 
-                <div className="flex justify-between items-center">
-                  <span>Aman Verma</span>
-                  <span className="font-bold">81%</span>
+              {[
+                {
+                  name: "Rahul Sharma",
+                  score: "92%"
+                },
+                {
+                  name: "Priya Singh",
+                  score: "88%"
+                },
+                {
+                  name: "Aman Verma",
+                  score: "81%"
+                }
+              ].map((member, index) => (
+                <div key={index}>
+
+                  <div className="flex justify-between mb-2">
+                    <span>
+                      {member.name}
+                    </span>
+
+                    <span className="font-semibold">
+                      {member.score}
+                    </span>
+                  </div>
+
+                  <div className="w-full bg-gray-200 h-3 rounded-full overflow-hidden">
+
+                    <div
+                      className="bg-gradient-to-r from-indigo-500 to-purple-600 h-3 rounded-full"
+                      style={{
+                        width: member.score
+                      }}
+                    ></div>
+
+                  </div>
+
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-black h-2 rounded-full w-[81%]"></div>
-                </div>
-              </div>
+              ))}
+
             </div>
           </div>
 
-          {/* Bottom Cards */}
-          <div className="grid md:grid-cols-2 gap-6">
+          {/* Tasks */}
+          <div className="lg:col-span-2 bg-white/70 backdrop-blur-lg rounded-3xl p-6 shadow-lg border border-white/20 hover:shadow-2xl transition">
 
-            <div className="bg-white rounded-2xl shadow-md p-6 flex items-center gap-4">
-              <Users size={40} />
-              <div>
-                <h2 className="text-xl font-bold">
-                  Team Members
-                </h2>
-                <p className="text-gray-500">
-                  24 active employees
-                </p>
-              </div>
+            <div className="flex justify-between items-center mb-6">
+
+              <h2 className="text-xl font-bold">
+                Recent Tasks
+              </h2>
+
+              <button
+                onClick={() =>
+                  setShowAllTasks(
+                    !showAllTasks
+                  )
+                }
+                className="text-indigo-600 font-semibold hover:underline"
+              >
+                {showAllTasks
+                  ? "Show Less"
+                  : "View All"}
+              </button>
+
             </div>
 
-            <div className="bg-white rounded-2xl shadow-md p-6 flex items-center gap-4">
-              <BarChart3 size={40} />
-              <div>
-                <h2 className="text-xl font-bold">
-                  Productivity Analytics
-                </h2>
-                <p className="text-gray-500">
-                  Live team performance insights
-                </p>
-              </div>
-            </div>
+            <div className="overflow-x-auto">
 
+              <table className="w-full">
+
+                <thead>
+                  <tr className="text-left border-b">
+                    <th className="pb-4">
+                      Task
+                    </th>
+
+                    <th className="pb-4">
+                      Project
+                    </th>
+
+                    <th className="pb-4">
+                      Priority
+                    </th>
+
+                    <th className="pb-4">
+                      Status
+                    </th>
+
+                    <th className="pb-4">
+                      Due
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  {(showAllTasks
+                    ? tasks
+                    : tasks.slice(0, 3)
+                  ).map((task, index) => (
+                    <tr
+                      key={index}
+                      className="border-b hover:bg-white/40 transition"
+                    >
+                      <td className="py-4 font-medium">
+                        {task.title}
+                      </td>
+
+                      <td>
+                        {task.project}
+                      </td>
+
+                      <td>
+                        <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm">
+                          {task.priority}
+                        </span>
+                      </td>
+
+                      <td>
+                        <span className="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+                          {task.status}
+                        </span>
+                      </td>
+
+                      <td>{task.due}</td>
+                    </tr>
+                  ))}
+
+                </tbody>
+
+              </table>
+
+            </div>
           </div>
+        </div>
+
+        {/* Bottom Cards */}
+        <div className="grid md:grid-cols-2 gap-6">
+
+          <div
+            onClick={() =>
+              navigate("/team")
+            }
+            className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-3xl p-8 shadow-lg hover:scale-105 hover:shadow-2xl transition cursor-pointer"
+          >
+            <h2 className="text-2xl font-bold mb-2">
+              Team Members
+            </h2>
+
+            <p className="text-white/80">
+              24 Active Employees
+            </p>
+          </div>
+
+          <div
+            onClick={() =>
+              navigate("/analytics")
+            }
+            className="bg-gradient-to-r from-pink-500 to-orange-500 text-white rounded-3xl p-8 shadow-lg hover:scale-105 hover:shadow-2xl transition cursor-pointer"
+          >
+            <h2 className="text-2xl font-bold mb-2">
+              Productivity Analytics
+            </h2>
+
+            <p className="text-white/80">
+              Live performance insights
+            </p>
+          </div>
+
         </div>
       </div>
 
       {/* Logout Popup */}
       {showLogout && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-xl shadow-xl w-[300px] text-center">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
 
-            <h2 className="text-xl font-semibold mb-4">
+          <div className="bg-white rounded-3xl p-8 w-[350px] shadow-2xl text-center animate-fadeIn">
+
+            <h2 className="text-2xl font-bold mb-3">
               Are you sure?
             </h2>
 
-            <div className="flex gap-3">
+            <p className="text-gray-500 mb-6">
+              You will be logged out from your account.
+            </p>
+
+            <div className="flex gap-4">
+
               <button
-                onClick={() => setShowLogout(false)}
-                className="w-full py-2 bg-gray-200 rounded-lg"
+                onClick={() =>
+                  setShowLogout(false)
+                }
+                className="flex-1 bg-gray-200 py-3 rounded-xl hover:bg-gray-300 transition"
               >
                 Cancel
               </button>
 
               <button
                 onClick={() => {
-                  localStorage.removeItem("token");
-                  localStorage.removeItem("user");
-                  window.location.href = "/";
+                  localStorage.removeItem(
+                    "token"
+                  );
+
+                  localStorage.removeItem(
+                    "user"
+                  );
+
+                  window.location.href =
+                    "/";
                 }}
-                className="w-full py-2 bg-red-500 text-white rounded-lg"
+                className="flex-1 bg-red-500 text-white py-3 rounded-xl hover:bg-red-600 transition"
               >
                 Logout
               </button>
+
             </div>
 
           </div>
