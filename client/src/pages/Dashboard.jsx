@@ -497,7 +497,7 @@ export default function Dashboard() {
                   window.location.href =
                     "/";
                 }}
-                className="flex-1 bg-red-500 text-white py-3 rounded-xl hover:bg-red-600 transition"
+                  className="flex items-center gap-3 p-4 rounded-xl cursor-pointer bg-red-500/20 hover:bg-red-500/40 text-red-400 hover:text-red-300 transition w-full mt-2"
               >
                 Logout
               </button>
