@@ -7,7 +7,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: process.env.CLIENT_URL || '*',
+  origin: ["https://saini-taskmanager-app.vercel.app", "http://localhost:5173"],
   credentials: true
 }));
 app.use(express.json());
@@ -20,7 +20,6 @@ app.use('/api/tasks', require('./routes/taskRoutes'));
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
-// Port from Railway environment
 const PORT = process.env.PORT || 5000;
 
 // Connect MongoDB then start server
