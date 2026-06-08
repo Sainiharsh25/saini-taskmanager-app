@@ -1,119 +1,46 @@
 import React from "react";
-
-import {
-  BrowserRouter,
-  Routes,
-  Route
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-
 import Dashboard from "./pages/Dashboard";
 import TeamDashboard from "./pages/TeamDashboard";
 import TaskerDashboard from "./pages/TaskerDashboard";
-
 import Tasks from "./pages/Tasks";
 import Projects from "./pages/Projects";
 import Team from "./pages/Team";
 import Analytics from "./pages/Analytics";
-
 import ProtectedRoute from "./components/ProtectedRoute";
-import ChatBot from "./components/ChatBot";   // Chatbot component
+import ChatBot from "./components/ChatBot";
 
-export default function App() {
+function AppContent() {
+  const location = useLocation();
+  const isAuthPage = location.pathname === "/" || location.pathname === "/signup";
+  const isLoggedIn = !!localStorage.getItem("token");
 
   return (
-    <BrowserRouter>
-
+    <>
       <Routes>
-
-        {/* ================= LOGIN ================= */}
-        <Route
-          path="/"
-          element={<Login />}
-        />
-
-        {/* ================= SIGNUP ================= */}
-        <Route
-          path="/signup"
-          element={<Signup />}
-        />
-
-        {/* ================= ADMIN DASHBOARD ================= */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* ================= TEAM DASHBOARD ================= */}
-        <Route
-          path="/team-dashboard"
-          element={
-            <ProtectedRoute>
-              <TeamDashboard />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* ================= TASKER DASHBOARD ================= */}
-        <Route
-          path="/tasker-dashboard"
-          element={
-            <ProtectedRoute>
-              <TaskerDashboard />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* ================= TASKS ================= */}
-        <Route
-          path="/tasks"
-          element={
-            <ProtectedRoute>
-              <Tasks />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* ================= PROJECTS ================= */}
-        <Route
-          path="/projects"
-          element={
-            <ProtectedRoute>
-              <Projects />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* ================= TEAM ================= */}
-        <Route
-          path="/team"
-          element={
-            <ProtectedRoute>
-              <Team />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* ================= ANALYTICS ================= */}
-        <Route
-          path="/analytics"
-          element={
-            <ProtectedRoute>
-              <Analytics />
-            </ProtectedRoute>
-          }
-        />
-
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/team-dashboard" element={<ProtectedRoute><TeamDashboard /></ProtectedRoute>} />
+        <Route path="/tasker-dashboard" element={<ProtectedRoute><TaskerDashboard /></ProtectedRoute>} />
+        <Route path="/tasks" element={<ProtectedRoute><Tasks /></ProtectedRoute>} />
+        <Route path="/projects" element={<ProtectedRoute><Projects /></ProtectedRoute>} />
+        <Route path="/team" element={<ProtectedRoute><Team /></ProtectedRoute>} />
+        <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
       </Routes>
-      <ChatBot />   {/* ← add this, outside Routes so it shows on every page */}
 
+      {!isAuthPage && isLoggedIn && <ChatBot />}
+    </>
+  );
+}
 
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }
