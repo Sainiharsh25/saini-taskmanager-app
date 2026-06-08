@@ -19,6 +19,7 @@ import Team from "./pages/Team";
 import Analytics from "./pages/Analytics";
 
 import ProtectedRoute from "./components/ProtectedRoute";
+import ChatBot from "./components/ChatBot";   // Chatbot component
 
 export default function App() {
 
@@ -110,6 +111,8 @@ export default function App() {
         />
 
       </Routes>
+      <ChatBot />   {/* ← add this, outside Routes so it shows on every page */}
+
 
     </BrowserRouter>
   );
