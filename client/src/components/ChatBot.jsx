@@ -48,7 +48,12 @@ export default function ChatBot() {
   return (
     <>
       <button
-        onClick={() => setOpen(!open)}
+        onClick={() => {
+  if (open) {
+    setMessages([{ role: "assistant", content: "Hi! Ask me about your tasks, deadlines, or project progress." }]);
+  }
+  setOpen(!open);
+}}
         style={{
           position: "fixed", bottom: 24, right: 24, zIndex: 1000,
           width: 52, height: 52, borderRadius: "50%",

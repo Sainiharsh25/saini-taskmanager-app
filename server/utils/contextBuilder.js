@@ -22,14 +22,12 @@ async function buildContext(userId, role) {
     console.log('User fetch error:', e.message);
   }
 
-  const overdue = tasks.filter(t => t.deadline && t.deadline < now);
-
   return `
 TODAY: ${now.toDateString()}
 
-TASKS (${tasks.length} total, ${overdue.length} overdue):
+TASKS (${tasks.length} total):
 ${tasks.map(t =>
-  `- [${t.priority ?? 'no priority'}] "${t.title}" | due: ${t.deadline?.toDateString() ?? 'no date'} | status: ${t.status}`
+  `- "${t.title}" | description: ${t.description ?? 'none'} | assigned to: ${t.assignedTo ?? 'unassigned'} | due: ${t.dueDate ?? 'no date'} | status: ${t.status}`
 ).join('\n') || 'No tasks found'}
 ${teamInfo}
   `.trim();
