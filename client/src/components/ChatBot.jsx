@@ -30,7 +30,7 @@ export default function ChatBot() {
         body: JSON.stringify({
           message: input,
           history: messages.slice(-6),
-          userId: user._id,
+          userId: user.id,        // ← fixed: was user._id
           role: user.role,
         }),
       });

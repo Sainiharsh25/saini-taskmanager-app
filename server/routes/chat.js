@@ -12,8 +12,7 @@ router.post('/', async (req, res) => {
     const context = await buildContext(userId, role);
 
     const response = await groq.chat.completions.create({
-      model: 'llama3-8b-8192',
-      messages: [
+      model: 'llama-3.3-70b-versatile',      messages: [
         {
           role: 'system',
           content: `You are a helpful project assistant for TaskFlow.
