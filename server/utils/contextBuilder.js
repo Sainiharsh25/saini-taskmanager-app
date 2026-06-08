@@ -1,22 +1,25 @@
 const Task = require('../models/Task');
-const Project = require('../models/Project');
 const User = require('../models/User');
 
 async function buildContext(userId, role) {
   const now = new Date();
 
-  const tasks = await Task.find({ assignedTo: userId, status: { $ne: 'done' } })
-    .populate('project', 'name')
-    .sort({ deadline: 1 })
-    .limit(20);
-
-  const projects = await Project.find({ members: userId })
-    .select('name status deadline');
-
+  let tasks = [];
   let teamInfo = '';
-  if (role === 'Admin') {
-    const members = await User.find({}).select('name role').lean();
-    teamInfo = `\nTEAM MEMBERS: ${members.map(m => `${m.name} (${m.role})`).join(', ')}`;
+
+  try {
+    tasks = await Task.find().sort({ createdAt: -1 }).limit(20);
+  } catch (e) {
+    console.log('Task fetch error:', e.message);
+  }
+
+  try {
+    if (role === 'Admin') {
+      const members = await User.find({}).select('name role').lean();
+      teamInfo = `\nTEAM MEMBERS: ${members.map(m => `${m.name} (${m.role})`).join(', ')}`;
+    }
+  } catch (e) {
+    console.log('User fetch error:', e.message);
   }
 
   const overdue = tasks.filter(t => t.deadline && t.deadline < now);
@@ -24,12 +27,10 @@ async function buildContext(userId, role) {
   return `
 TODAY: ${now.toDateString()}
 
-OPEN TASKS (${tasks.length} total, ${overdue.length} overdue):
+TASKS (${tasks.length} total, ${overdue.length} overdue):
 ${tasks.map(t =>
-  `- [${t.priority ?? 'no priority'}] "${t.title}" | project: ${t.project?.name ?? 'none'} | due: ${t.deadline?.toDateString() ?? 'no date'} | status: ${t.status}`
-).join('\n')}
-
-PROJECTS: ${projects.map(p => `${p.name} (${p.status})`).join(', ') || 'none'}
+  `- [${t.priority ?? 'no priority'}] "${t.title}" | due: ${t.deadline?.toDateString() ?? 'no date'} | status: ${t.status}`
+).join('\n') || 'No tasks found'}
 ${teamInfo}
   `.trim();
 }
