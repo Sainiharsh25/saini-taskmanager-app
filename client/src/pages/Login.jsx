@@ -23,7 +23,6 @@ const DEMO_CREDENTIALS = [
     email: "admin@gmail.com",
     password: "admin123",
     color: "indigo",
-    icon: "👑",
     description: "Full access"
   },
   {
@@ -31,7 +30,6 @@ const DEMO_CREDENTIALS = [
     email: "tasker@gmail.com",
     password: "tasker123",
     color: "pink",
-    icon: "⚡",
     description: "Task access"
   }
 ];
