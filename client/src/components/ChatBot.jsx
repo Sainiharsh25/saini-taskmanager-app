@@ -20,17 +20,18 @@ export default function ChatBot() {
     setLoading(true);
 
     try {
-      const token = localStorage.getItem("token");
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
 
       const res = await fetch(`${API_URL}/api/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
           message: input,
           history: messages.slice(-6),
+          userId: user._id,
+          role: user.role,
         }),
       });
 
@@ -46,7 +47,6 @@ export default function ChatBot() {
 
   return (
     <>
-      {/* Floating button */}
       <button
         onClick={() => setOpen(!open)}
         style={{
@@ -59,7 +59,6 @@ export default function ChatBot() {
         {open ? "✕" : "💬"}
       </button>
 
-      {/* Chat window */}
       {open && (
         <div style={{
           position: "fixed", bottom: 88, right: 24, zIndex: 1000,
@@ -69,7 +68,6 @@ export default function ChatBot() {
           boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
         }}>
 
-          {/* Header */}
           <div style={{
             padding: "12px 16px", borderBottom: "1px solid #e5e7eb",
             fontWeight: 500, fontSize: 14, background: "#534AB7", color: "#fff"
@@ -77,7 +75,6 @@ export default function ChatBot() {
             AI Project Assistant
           </div>
 
-          {/* Messages */}
           <div style={{
             flex: 1, overflowY: "auto", padding: 12,
             display: "flex", flexDirection: "column", gap: 8
@@ -100,7 +97,6 @@ export default function ChatBot() {
             )}
           </div>
 
-          {/* Input */}
           <div style={{
             padding: 10, borderTop: "1px solid #e5e7eb",
             display: "flex", gap: 8
