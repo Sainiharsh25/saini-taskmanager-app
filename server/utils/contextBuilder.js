@@ -1,8 +1,8 @@
-import Task from '../models/Task.js';
-import Project from '../models/Project.js';
-import User from '../models/User.js';
+const Task = require('../models/Task');
+const Project = require('../models/Project');
+const User = require('../models/User');
 
-export async function buildContext(userId, role) {
+async function buildContext(userId, role) {
   const now = new Date();
 
   const tasks = await Task.find({ assignedTo: userId, status: { $ne: 'done' } })
@@ -20,7 +20,6 @@ export async function buildContext(userId, role) {
   }
 
   const overdue = tasks.filter(t => t.deadline && t.deadline < now);
-  const upcoming = tasks.filter(t => t.deadline && t.deadline >= now);
 
   return `
 TODAY: ${now.toDateString()}
@@ -34,3 +33,5 @@ PROJECTS: ${projects.map(p => `${p.name} (${p.status})`).join(', ') || 'none'}
 ${teamInfo}
   `.trim();
 }
+
+module.exports = { buildContext };
